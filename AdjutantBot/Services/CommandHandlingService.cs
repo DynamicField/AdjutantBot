@@ -38,12 +38,8 @@ namespace AdjutantBot.Services
             var context = new SocketCommandContext(_client, message);
             var result = await _commands.ExecuteAsync(context, argPos, _provider).ConfigureAwait(false);
 
-            if (result.Error.HasValue &&
-                result.Error.Value != CommandError.UnknownCommand)
+            if (result.Error.HasValue)
                 await context.Channel.SendMessageAsync(result.ToString());
-            else if (result.Error.HasValue &&
-                     result.Error.Value == CommandError.UnknownCommand)
-                await _commands.ExecuteAsync(context, "docs" + message.Content.Replace(_client.CurrentUser.Mention.Replace("!", ""), ""), _provider).ConfigureAwait(false);
         }
 
     }
