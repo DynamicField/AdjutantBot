@@ -12,6 +12,7 @@ namespace AdjutantBot.Modules
     {
         public const string MuteRoleName
     = "Cone-of-Shame";
+
         [Command("ping"), Summary("pong!")]
         public async Task Ping()
         {
@@ -46,6 +47,7 @@ namespace AdjutantBot.Modules
 
             await targetUser.AddRoleAsync(muteRole);
             await ReplyAsync(targetUser + " has been muted");
+            await targetUser.SendMessageAsync("You have been temporarily muted in the Game Development Society and have been given the Cone of Shame.");
         }
 
         [Command("unmute"), Summary("Mute the specified user")]
@@ -59,6 +61,7 @@ namespace AdjutantBot.Modules
 
             await targetUser.RemoveRoleAsync(unMuteRole);
             await ReplyAsync(targetUser + " has been unmuted");
+            await targetUser.SendMessageAsync("You have been unmuted in the Game Development Society and no longer have the Cone of Shame. Behave yourself in the future.");
         }
 
         private async Task ConfigureChannelMuteRolePermissionsAsync(IGuildChannel channel, IRole muteRole)
