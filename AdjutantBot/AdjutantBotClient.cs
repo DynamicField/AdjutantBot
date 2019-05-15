@@ -20,9 +20,7 @@ namespace AdjutantBot
             var services = ConfigureServices();
             services.GetRequiredService<LoggingService>();
             await services.GetRequiredService<CommandHandlingService>().InitializeAsync(services).ConfigureAwait(false);
-            _config = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("config.json")
-                .Build();
-            await _client.LoginAsync(TokenType.Bot, _config["BotToken"]).ConfigureAwait(false);
+            await _client.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("BOT_TOKEN")).ConfigureAwait(false);
             await _client.StartAsync().ConfigureAwait(false);
         }
 

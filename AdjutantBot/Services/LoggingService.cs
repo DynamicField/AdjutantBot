@@ -19,11 +19,10 @@ namespace AdjutantBot.Services
         // DiscordSocketClient and CommandService are injected automatically from the IServiceProvider
         public LoggingService(DiscordSocketClient client, CommandService commands)
         {
-            _logDirectory = Path.Combine(AppContext.BaseDirectory, "logs");
             _logFile = Path.Combine(_logDirectory, $"{DateTime.UtcNow.ToString("yyy.MM.dd")}.log");
             _lockObj = new object();
             // Possibly change to log to SysLog on Linux
-            
+            _logDirectory = Path.Combine(AppContext.BaseDirectory, "logs");
 
             _client = client;
             _commands = commands;
