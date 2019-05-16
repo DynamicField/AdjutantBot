@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdjutantBot", "AdjutantBot\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdjutantBotConsole", "AdjutantBotConsole\AdjutantBotConsole.csproj", "{DDE32878-77DA-4B2D-B6E6-1637B7A79DF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdjutantApi", "AdjutantApi\AdjutantApi.csproj", "{4781FBD6-0BB3-4ADE-AB74-D1EAF860FBED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdjutantApi.Data", "AdjutantApi.Data\AdjutantApi.Data.csproj", "{30DB5883-8B14-443E-9E8B-F8135A973399}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{DDE32878-77DA-4B2D-B6E6-1637B7A79DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDE32878-77DA-4B2D-B6E6-1637B7A79DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDE32878-77DA-4B2D-B6E6-1637B7A79DF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4781FBD6-0BB3-4ADE-AB74-D1EAF860FBED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4781FBD6-0BB3-4ADE-AB74-D1EAF860FBED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4781FBD6-0BB3-4ADE-AB74-D1EAF860FBED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4781FBD6-0BB3-4ADE-AB74-D1EAF860FBED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30DB5883-8B14-443E-9E8B-F8135A973399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30DB5883-8B14-443E-9E8B-F8135A973399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30DB5883-8B14-443E-9E8B-F8135A973399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30DB5883-8B14-443E-9E8B-F8135A973399}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
