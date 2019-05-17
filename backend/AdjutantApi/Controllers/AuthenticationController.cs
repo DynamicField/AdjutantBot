@@ -37,11 +37,10 @@ namespace AdjutantApi.Controllers
             var info = await _signInManager.GetExternalLoginInfoAsync();
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
 
-            if (result.Succeeded) return Redirect("http://localhost:8080/test");
+            if (result.Succeeded) return Ok(HttpContext.Response.Cookies);
 
             var username = info.Principal.FindFirstValue(ClaimTypes.Name);
-            var usernameWithDiscriminator = $"{username}#" +
-                        $"{info.Principal.FindFirstValue(ClaimTypes.Surname)}";
+            var usernameWithDiscriminator = $"{username}#{info.Principal.FindFirstValue(ClaimTypes.Surname)}";
             
             var newUser = new AdjutantUser {
                 UserName = username,
