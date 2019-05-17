@@ -10,5 +10,10 @@
       "AppSecret": "PUT YOUR SECRET HERE"
     }
   },
+   "Database": {
+     "PostgreSQL": {
+       "ConnectionString": "User ID=YOUR USER HERE;Password=YOUR PW HERE;Host=localhost;Port=5432;Database=adjutant;"
+     }
+   },
   "AllowedHosts": "*"
 }

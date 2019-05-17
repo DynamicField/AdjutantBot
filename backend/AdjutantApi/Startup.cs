@@ -43,14 +43,10 @@ namespace AdjutantApi
                     discordOptions.ClaimActions.MapJsonKey(ClaimTypes.UserData, "avatar");
                 });
             
-            // TODO: Put whole connection string into environment into configs.
-            // reason is that connection strings can differ from prod-settings
-            var connection = $"User ID={Environment.GetEnvironmentVariable("DB_USER")};Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};Host=localhost;Port=5432;Database=adjutant;";
-
             services.AddDbContext<AdjutantContext>
                 (options =>
             {
-                options.UseNpgsql(connection, b => { b.MigrationsAssembly("AdjutantApi"); });
+                options.UseNpgsql(Configuration["Database:PostgreSQL:ConnectionString"], b => { b.MigrationsAssembly("AdjutantApi"); });
             });
         }
 
