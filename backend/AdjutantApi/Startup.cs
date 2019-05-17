@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Security.Claims;
 using AdjutantApi.Data;
+using AdjutantApi.Data.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -25,7 +28,7 @@ namespace AdjutantApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<AdjutantUser, IdentityRole>()
                 .AddEntityFrameworkStores<AdjutantContext>()
                 .AddDefaultTokenProviders();
             
@@ -34,7 +37,10 @@ namespace AdjutantApi
                 {
                     discordOptions.ClientId = Configuration["Authentication:Discord:AppId"];
                     discordOptions.ClientSecret = Configuration["Authentication:Discord:AppSecret"];
-                    discordOptions.Scope.Add("guilds");
+                    discordOptions.Scope.Add("guilds identify");
+                    discordOptions.SaveTokens = true;
+                    discordOptions.ClaimActions.MapJsonKey(ClaimTypes.Surname, "discriminator");
+                    discordOptions.ClaimActions.MapJsonKey(ClaimTypes.UserData, "avatar");
                 });
             
             // TODO: Put whole connection string into environment into configs.

@@ -3,15 +3,17 @@ using System;
 using AdjutantApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AdjutantApi.Migrations
 {
     [DbContext(typeof(AdjutantContext))]
-    partial class AdjutantContextModelSnapshot : ModelSnapshot
+    [Migration("20190517170114_AddOwnIdentityUser")]
+    partial class AddOwnIdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,11 +203,7 @@ namespace AdjutantApi.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("AvatarHash");
-
                     b.Property<int?>("BoundKeyId");
-
-                    b.Property<string>("DiscordUsername");
 
                     b.HasIndex("BoundKeyId");
 
