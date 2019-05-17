@@ -1,0 +1,14 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "Authentication": {
+    "Discord": {
+      "AppId": "PUT YOUR APPID HERE",
+      "AppSecret": "PUT YOUR SECRET HERE"
+    }
+  },
+  "AllowedHosts": "*"
+}

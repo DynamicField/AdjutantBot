@@ -1,0 +1,15 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  },
+  "Authentication": {
+    "Discord": {
+      "AppId": "PUT YOUR APPID HERE",
+      "AppSecret": "PUT YOUR SECRET HERE"
+    }
+  }
+}
