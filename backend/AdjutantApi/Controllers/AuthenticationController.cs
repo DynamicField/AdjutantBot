@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 
 namespace AdjutantApi.Controllers
@@ -16,11 +17,13 @@ namespace AdjutantApi.Controllers
     {
         private readonly SignInManager<AdjutantUser> _signInManager;
         private readonly UserManager<AdjutantUser> _userManager;
+        private readonly IConfiguration _configuration;
         
-        public AuthenticationController(SignInManager<AdjutantUser> signInManager, UserManager<AdjutantUser> userManager)
+        public AuthenticationController(SignInManager<AdjutantUser> signInManager, UserManager<AdjutantUser> userManager, IConfiguration configuration)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         [HttpGet(nameof(SignInWithDiscord))]
@@ -37,7 +40,7 @@ namespace AdjutantApi.Controllers
             var info = await _signInManager.GetExternalLoginInfoAsync();
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
 
-            if (result.Succeeded) return Ok(HttpContext.Response.Cookies);
+            if (result.Succeeded) return Redirect(_configuration["FrontendOAuthCallback"]);
 
             var username = info.Principal.FindFirstValue(ClaimTypes.Name);
             var usernameWithDiscriminator = $"{username}#{info.Principal.FindFirstValue(ClaimTypes.Surname)}";
@@ -62,7 +65,7 @@ namespace AdjutantApi.Controllers
 
             if (_signInManager.IsSignedIn(User))
             {
-                return Ok(HttpContext.Response.Cookies);
+                return Redirect(_configuration["FrontendOAuthCallback"]);
             }
 
             return BadRequest(new {Error = "Something went wrong during the authentication process!"});

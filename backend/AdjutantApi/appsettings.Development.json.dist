@@ -16,6 +16,9 @@
    "PostgreSQL": {
      "ConnectionString": "User ID=YOUR USER HERE;Password=YOUR PW HERE;Host=localhost;Port=5432;Database=adjutant;"
    }
- }
+ },
+    "Adjutant": {
+     "FrontendOAuthCallback": "http://localhost:4200/login/callback"
+    },
   
 }

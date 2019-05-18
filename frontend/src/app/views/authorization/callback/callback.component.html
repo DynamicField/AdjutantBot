@@ -1,0 +1,7 @@
+<div id="success" *ngIf="currentUser">
+  Hey {{currentUser.discordUsername}}!
+</div>
+
+<div id="failure" *ngIf="httpError">
+  {{httpError}}
+</div>

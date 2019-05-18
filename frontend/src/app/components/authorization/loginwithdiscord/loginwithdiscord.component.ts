@@ -12,4 +12,7 @@ export class LoginwithdiscordComponent implements OnInit {
   ngOnInit() {
   }
 
+  RedirectToDiscordOAuth() {
+    window.location.replace('http://localhost:8080/authentication/signinwithdiscord');
+  }
 }
