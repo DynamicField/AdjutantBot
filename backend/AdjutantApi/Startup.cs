@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 
 namespace AdjutantApi
 {
@@ -48,6 +49,17 @@ namespace AdjutantApi
             {
                 options.UseNpgsql(Configuration["Database:PostgreSQL:ConnectionString"], b => { b.MigrationsAssembly("AdjutantApi"); });
             });
+
+            services.AddSingleton<IConfiguration>(Configuration.GetSection("Adjutant"));
+            
+            services.AddCors(o => o.AddPolicy("AllowAny", builder =>
+            {
+                builder.WithOrigins("http://localhost:4200")
+                    .AllowCredentials()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -61,6 +73,7 @@ namespace AdjutantApi
                 app.UseHsts();
             }
 
+            app.UseCors("AllowAny");
             app.UseAuthentication();
             app.UseMvc();
         }
