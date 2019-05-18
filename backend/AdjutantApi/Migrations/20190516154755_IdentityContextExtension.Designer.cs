@@ -3,21 +3,39 @@ using System;
 using AdjutantApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AdjutantApi.Migrations
 {
     [DbContext(typeof(AdjutantContext))]
-    partial class AdjutantContextModelSnapshot : ModelSnapshot
+    [Migration("20190516154755_IdentityContextExtension")]
+    partial class IdentityContextExtension
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("AdjutantApi.Data.Models.DiscordAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountId");
+
+                    b.Property<int?>("BoundKeyId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BoundKeyId");
+
+                    b.ToTable("DiscordAccounts");
+                });
 
             modelBuilder.Entity("AdjutantApi.Data.Models.VerificationKey", b =>
                 {
@@ -87,9 +105,6 @@ namespace AdjutantApi.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -128,8 +143,6 @@ namespace AdjutantApi.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -197,19 +210,11 @@ namespace AdjutantApi.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AdjutantApi.Data.Models.AdjutantUser", b =>
+            modelBuilder.Entity("AdjutantApi.Data.Models.DiscordAccount", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("AvatarHash");
-
-                    b.Property<int?>("BoundKeyId");
-
-                    b.Property<string>("DiscordUsername");
-
-                    b.HasIndex("BoundKeyId");
-
-                    b.HasDiscriminator().HasValue("AdjutantUser");
+                    b.HasOne("AdjutantApi.Data.Models.VerificationKey", "BoundKey")
+                        .WithMany()
+                        .HasForeignKey("BoundKeyId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -255,13 +260,6 @@ namespace AdjutantApi.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("AdjutantApi.Data.Models.AdjutantUser", b =>
-                {
-                    b.HasOne("AdjutantApi.Data.Models.VerificationKey", "BoundKey")
-                        .WithMany()
-                        .HasForeignKey("BoundKeyId");
                 });
 #pragma warning restore 612, 618
         }
