@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AdjutantBot.Modules;
 using AdjutantBot.Services;
 using Discord;
 using Discord.Commands;
@@ -31,6 +32,7 @@ namespace AdjutantBot
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
                 .AddSingleton<LoggingService>()
+                .AddSingleton<IVerificationService, DummyGameJamService>()
                 .BuildServiceProvider();
         }
     }
