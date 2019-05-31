@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using AdjutantBot.Models;
 using Discord;
@@ -79,6 +80,31 @@ namespace AdjutantBot.Modules
 
             if (teamName == null) await ReplyAsync("You need to input a team name");
             if (limit == default) await ReplyAsync("You need to input a team limit");
+        }
+
+        [Command(text: "teamlist")]
+        public async Task RevealTeamList()
+        {
+            List<TeamModel> teamList = await _verificationService.RevealTeamListAsync();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+
+            foreach (var team in teamList)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var teamTeamMemberId in team.TeamMemberIds)
+                {
+                    if (teamTeamMemberId != team.TeamCaptainId) sb.Append(Context.Client.GetUser(teamTeamMemberId).Username + ". ");
+                }
+                if (sb.Length == 0) sb.Append("There are no Team Members.");
+                embedBuilder.AddField("__**Team Name:**__", $"**{team.TeamName}**")
+                    .AddField("__Team Captain:__", Context.Client.GetUser(team.TeamCaptainId).Username)
+                    .AddField("__Team Members:__", sb.ToString())
+                    .AddField("__Team Size:__", team.TeamLimit.ToString())
+                    .WithColor(Color.Blue);
+            }
+
+            await ReplyAsync( "", embed: embedBuilder.Build());
         }
     }
 }

@@ -49,5 +49,10 @@ namespace AdjutantBot.Services
 
             return (SetLimitModifierResponse.Failure, null);
         }
+
+        public async Task<List<TeamModel>> RevealTeamListAsync()
+        {
+            return _teams;
+        }
     }
 }
