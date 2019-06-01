@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Morcatko.AspNetCore.JsonMergePatch;
 using Newtonsoft.Json.Serialization;
 
@@ -55,6 +57,7 @@ namespace AdjutantApi
             services.AddDbContextPool<AdjutantContext>(options =>
             {
                 options.UseNpgsql(Configuration["Database:PostgreSQL:ConnectionString"], b => { b.MigrationsAssembly("AdjutantApi"); });
+                options.UseLoggerFactory(LogFactory);
             });
             // A pool provides better performance by reducing the number of DbContext instanciations.
 
@@ -69,7 +72,10 @@ namespace AdjutantApi
             }));
 
         }
-
+#pragma warning disable 618 // Proper replacements for obsolete logging APIs will be available in version 3.0. In the meantime, it is safe to ignore and suppress the warnings.
+        public static readonly LoggerFactory LogFactory
+            = new LoggerFactory(new[] { new ConsoleLoggerProvider((c, l) => (int)l >= (int)LogLevel.Information, true) });
+#pragma warning restore 618
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

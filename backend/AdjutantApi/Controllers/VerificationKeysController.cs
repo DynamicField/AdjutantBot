@@ -49,6 +49,16 @@ namespace AdjutantApi.Controllers
             return CreatedAtAction(nameof(Get), new { result.Entity.Id }, result.Entity);
         }
 
+        [HttpPut("{id:int}")]
+        public IActionResult Put(int id, [FromBody] VerificationKey key)
+        {
+            key.Id = id;
+            _context.Entry(key).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
         [HttpDelete("PurgeAll")]
         public IActionResult PurgeAllKeys()
         {
