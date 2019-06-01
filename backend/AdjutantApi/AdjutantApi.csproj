@@ -6,12 +6,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="AspNet.Security.OAuth.Discord" Version="2.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+        <PackageReference Include="Morcatko.AspNetCore.JsonMergePatch" Version="2.0.0-beta10" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
     </ItemGroup>

@@ -19,6 +19,5 @@
  },
     "Adjutant": {
      "FrontendOAuthCallback": "http://localhost:4200/login/callback"
-    },
-  
+    }
 }

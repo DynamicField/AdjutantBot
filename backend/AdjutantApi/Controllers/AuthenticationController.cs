@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AdjutantApi.Data.Models;
+using AdjutantApi.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,10 +17,10 @@ namespace AdjutantApi.Controllers
     public class AuthenticationController : Controller
     {
         private readonly SignInManager<AdjutantUser> _signInManager;
-        private readonly UserManager<AdjutantUser> _userManager;
+        private readonly AdjutantUserManager _userManager;
         private readonly IConfiguration _configuration;
-        
-        public AuthenticationController(SignInManager<AdjutantUser> signInManager, UserManager<AdjutantUser> userManager, IConfiguration configuration)
+
+        public AuthenticationController(SignInManager<AdjutantUser> signInManager, AdjutantUserManager userManager, IConfiguration configuration)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -33,7 +34,7 @@ namespace AdjutantApi.Controllers
             var authenticationProperties = _signInManager.ConfigureExternalAuthenticationProperties("Discord", Url.Action(nameof(HandleExternalLogin)));
             return Challenge(authenticationProperties, "Discord");
         }
-        
+
         [HttpGet("OAuthCallback")]
         public async Task<IActionResult> HandleExternalLogin()
         {
@@ -44,23 +45,20 @@ namespace AdjutantApi.Controllers
 
             var username = info.Principal.FindFirstValue(ClaimTypes.Name);
             var usernameWithDiscriminator = $"{username}#{info.Principal.FindFirstValue(ClaimTypes.Surname)}";
-            
-            var newUser = new AdjutantUser {
+
+            var newUser = new AdjutantUser
+            {
                 UserName = username,
                 DiscordUsername = usernameWithDiscriminator,
                 AvatarHash = info.Principal.FindFirstValue(ClaimTypes.UserData)
             };
-            
+
             var createResult = await _userManager.CreateAsync(newUser);
             if (!createResult.Succeeded)
             {
-                throw new Exception(createResult.Errors.Select(e => e.Description)
-                    .Aggregate((errors, error) => $"{errors}, {error}"));
+                throw new Exception(string.Join(", ", createResult.Errors.Select(e => e.Description)));
             }
-
-            await _userManager.AddLoginAsync(newUser, info);
-            var newUserClaims = info.Principal.Claims.Append(new Claim("userId", newUser.Id));
-            await _userManager.AddClaimsAsync(newUser, newUserClaims);
+            await _userManager.AddLoginAsync(newUser, info); // User id claim type: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
             await _signInManager.SignInAsync(newUser, isPersistent: false);
 
             if (_signInManager.IsSignedIn(User))
@@ -68,7 +66,7 @@ namespace AdjutantApi.Controllers
                 return Redirect(_configuration["FrontendOAuthCallback"]);
             }
 
-            return BadRequest(new {Error = "Something went wrong during the authentication process!"});
+            return BadRequest(new { Error = "Something went wrong during the authentication process!" });
         }
 
         [Authorize]
@@ -79,5 +77,5 @@ namespace AdjutantApi.Controllers
             return Ok("Successfully logged out!");
         }
     }
-    
+
 }
